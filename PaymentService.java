@@ -4,7 +4,13 @@ public class PaymentService {
 
         System.out.println("Processing payment for customer");
 
-        String customerName = customer.getName().trim();
+        String customerName = customer.getName();
+
+if (customerName == null) {
+    return new PaymentResult(false, "Customer name missing");
+}
+
+customerName = customerName.trim();
 
         if (customerName == null) {
             return new PaymentResult(false, "Customer name missing");
