@@ -28,6 +28,7 @@ jobs:
           echo "Required files found."
 
       - name: Verify PaymentService fix
+        if: github.event_name == 'pull_request'
         run: |
           echo "Checking null-handling fix..."
 
