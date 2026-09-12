@@ -20,25 +20,29 @@ jobs:
       - name: Check repository files
         run: |
           echo "Checking AI Firefighter repository..."
-          test -f demo_repo/PaymentService.java || exit 1
-          test -f demo_repo/Customer.java || exit 1
-          test -f demo_repo/ReproduceBug.java || exit 1
+
+          test -f PaymentService.java || exit 1
+          test -f Customer.java || exit 1
+          test -f ReproduceBug.java || exit 1
+
           echo "Required files found."
 
       - name: Verify PaymentService fix
         run: |
           echo "Checking null-handling fix..."
 
-          grep -q "String customerName = customer.getName();" demo_repo/PaymentService.java
-          grep -q "if (customerName == null)" demo_repo/PaymentService.java
-          grep -q "customerName = customerName.trim();" demo_repo/PaymentService.java
+          grep -q "String customerName = customer.getName();" PaymentService.java
+          grep -q "if (customerName == null)" PaymentService.java
+          grep -q "customerName = customerName.trim();" PaymentService.java
 
           echo "Null-handling fix verified."
 
       - name: Verify reproduction test
         run: |
           echo "Checking sandbox reproduction..."
-          test -f demo_repo/ReproduceBug.java
+
+          test -f ReproduceBug.java
+
           echo "Reproduction test found."
 
       - name: Validation complete
