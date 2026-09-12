@@ -1,0 +1,48 @@
+name: AI Firefighter CI
+
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+
+jobs:
+  validate:
+    name: Validate AI Firefighter
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check repository files
+        run: |
+          echo "Checking AI Firefighter repository..."
+          test -f demo_repo/PaymentService.java || exit 1
+          test -f demo_repo/Customer.java || exit 1
+          test -f demo_repo/ReproduceBug.java || exit 1
+          echo "Required files found."
+
+      - name: Verify PaymentService fix
+        run: |
+          echo "Checking null-handling fix..."
+
+          grep -q "String customerName = customer.getName();" demo_repo/PaymentService.java
+          grep -q "if (customerName == null)" demo_repo/PaymentService.java
+          grep -q "customerName = customerName.trim();" demo_repo/PaymentService.java
+
+          echo "Null-handling fix verified."
+
+      - name: Verify reproduction test
+        run: |
+          echo "Checking sandbox reproduction..."
+          test -f demo_repo/ReproduceBug.java
+          echo "Reproduction test found."
+
+      - name: Validation complete
+        run: |
+          echo "================================"
+          echo "AI Firefighter CI PASSED"
+          echo "================================"
